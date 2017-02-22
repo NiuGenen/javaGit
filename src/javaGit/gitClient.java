@@ -22,7 +22,7 @@ public class GitClient {
         }
 	}
 
-	public static void ShowHelp(){
+	public static void showHelp(){
 		System.out.println("javaGit [command][parament...]");
 		System.out.println("1.	init [reponsity name]: register current working directory");
 		System.out.println("	javaGit init project1");
@@ -33,20 +33,23 @@ public class GitClient {
 			gitClientInit();
 			
 			if(args.length == 0){
-				ShowHelp();
+				showHelp();
 				return;
 			}
 			
             String command = args[0];
             switch(command){
+            case "del":
+            	gitDel(args[1]);
+            	break;
             case "show":
-            	GitShowReponsities();
+            	gitShowReponsities();
             	break;
             case "test":
-            	GitTest(args[0]);
+            	gitTest(args[0]);
             	break;
             case "init":
-            	GitInit(args[1]);
+            	gitInit(args[1]);
             	break;
             default:
             	System.out.println("command not found : "+command);
@@ -57,19 +60,12 @@ public class GitClient {
         }
 	}
 	
-	public static void GitTest(String str){
-		try{
-			System.out.println(git.test(str));
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public static void GitInit(String repository){
+	public static void gitDel(String repository){
 		try {
-			String path = System.getProperty("user.dir");
-			System.out.println("Current Working Path:\n"+path+"\nReponsity :"+repository);
-			git.RegReponsity(path, repository);
+			//String path = System.getProperty("user.dir");
+			//System.out.println("Current Working Path:\n"+path+"\nReponsity :"+repository);
+			String ret = git.delRepository(repository);
+			System.out.println(ret);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch(Exception e){
@@ -77,9 +73,30 @@ public class GitClient {
 		}
 	}
 	
-	public static void GitShowReponsities(){
+	public static void gitTest(String str){
 		try{
-			System.out.println(git.ShowReponsities());
+			System.out.println(git.test(str));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void gitInit(String repository){
+		try {
+			String path = System.getProperty("user.dir");
+			System.out.println("Current Working Path:\n"+path+"\nReponsity name:"+repository);
+			String ret = git.regRepository(path, repository);
+			System.out.println(ret);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void gitShowReponsities(){
+		try{
+			System.out.println(git.showReponsities());
 		} catch(RemoteException e){
 			e.printStackTrace();
 		} catch(Exception e){

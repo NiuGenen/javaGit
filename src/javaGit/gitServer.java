@@ -18,7 +18,7 @@ public class GitServer {
 				srvrDir.mkdir();
 			}
 			
-			git = new GitImpl();
+			git = new GitImpl();	//remote object
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
