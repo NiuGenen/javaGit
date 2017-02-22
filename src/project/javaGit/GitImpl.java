@@ -49,9 +49,9 @@ public class GitImpl extends UnicastRemoteObject implements IGit{
 	}
 
 	@Override
-	public void uploadFile(String uploadID, byte[] data, int start, int len)
+	public void uploadFile(String uploadID, byte[] data, int offset, int len)
 			throws RemoteException {
-		git_trans.uploadFile(uploadID, data, start, len);
+		git_trans.uploadFile(uploadID, data, offset, len);
 	}
 
 	@Override
@@ -67,46 +67,5 @@ public class GitImpl extends UnicastRemoteObject implements IGit{
 			directory.mkdir();
 		}
 		return "[mkdir] " + dir;
-	}
-	
-	@Override
-	public void clearRepository(String repository){
-		File directory = new File(GitServer.serverDirName + "/" + repository);
-		if(directory.exists()){
-			File[] files = directory.listFiles();
-			for(int i=0;i<files.length;++i){
-				files[i].delete();
-			}
-		}
-	}
-
-	@Override
-	public boolean containRepository(String repository)
-			throws RemoteException {
-		return git_reg.containRepository(repository);
-	}
-
-	@Override
-	public boolean confirmRepository(String regPath, String repository)
-			throws RemoteException {
-		return git_reg.confirmRepository(regPath,repository);
-	}
-
-	@Override
-	public boolean download_next(String downloadID)
-			throws RemoteException {
-		return git_trans.download_next(downloadID);
-	}
-
-	@Override
-	public String downloadRepositoryStart(String repository)
-			throws RemoteException {
-		return git_trans.downloadRepositoryStart(repository);
-	}
-
-	@Override
-	public GitFile downloadFile(String downloadID)
-			throws RemoteException {
-		return git_trans.downloadFile(downloadID);
 	}
 }

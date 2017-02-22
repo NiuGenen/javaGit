@@ -132,8 +132,4 @@ public class GitReg {
 		
 		return "Delete repository " + repository + " success.";
 	}
-	
-	public boolean confirmRepository(String regPath, String repository){
-		return reg_map.get(repository).equals(regPath);
-	}
 }

@@ -43,9 +43,6 @@ public class GitClient {
 		try{
             String command = args[0];
             switch(command){
-            case "clone":
-            	cmd.gitClone(args[1]);
-            	break;
             case "commit":
             	cmd.gitCommit(args[1]);
             	break;
