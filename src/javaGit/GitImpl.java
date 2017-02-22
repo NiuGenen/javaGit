@@ -1,36 +1,40 @@
 package javaGit;
 
+import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Iterator;
-import java.util.Map;
 
 public class GitImpl extends UnicastRemoteObject implements IGit{
 
 	private static final long serialVersionUID = -3861487618555766683L;
 
-	public Map<String,String> regs;
+	private GitReg git_reg;
 	
-	protected GitImpl( Map<String,String> reg) throws RemoteException {
+	protected GitImpl() throws RemoteException {
 		super();
-		regs = reg;
+		git_reg = GitReg.getInstance();
 	}
 
-	public void CreatReponsity(String name) throws RemoteException {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	public void DeleteReponsity(String name) throws RemoteException {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	public void RegReponsity(String path, String reponsity)
+	public void CreatReponsity(String name) 
 			throws RemoteException {
-		System.out.println("[Register]\n"+reponsity+"\n"+path);
-		regs.put(reponsity, path);
-		gitServer.writeRegConfigure(path,reponsity);
+	}
+
+	public void DeleteReponsity(String name) 
+			throws RemoteException {
+	}
+
+	public String RegReponsity(String path, String repository)	//register new repository
+			throws RemoteException {
+		System.out.println("[Register]\n"+repository+"\n"+path);
+		
+		File reponsityDir = new File(GitServer.serverDirName+"/"+repository);
+		if(reponsityDir.exists()){
+			return "Reponsity ["+repository+"] is already excits.";
+		}
+		reponsityDir.mkdir();
+		
+		git_reg.RegReponsity(path,repository);
+		return "Register success.";
 	}
 
 	@Override
@@ -41,15 +45,7 @@ public class GitImpl extends UnicastRemoteObject implements IGit{
 
 	@Override
 	public String ShowReponsities() throws RemoteException {
-		//String[] keys = (String[])( regs.keySet().toArray() );
-		Iterator<String> it = regs.keySet().iterator();
-		
-		String ret = "";
-		while(it.hasNext()){
-			String key = it.next();
-			ret += key + " ->" + regs.get(key)+"\n";
-		}
-		return ret;
+		return git_reg.ShowReponsities();
 	}
 	
 }

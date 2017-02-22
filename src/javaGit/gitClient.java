@@ -5,7 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;  
 import java.rmi.RemoteException;
 
-public class gitClient {
+public class GitClient {
 	
 	private static IGit git;
 	
@@ -65,11 +65,11 @@ public class gitClient {
 		}
 	}
 	
-	public static void GitInit(String reponsity){
+	public static void GitInit(String repository){
 		try {
 			String path = System.getProperty("user.dir");
-			System.out.println("Current Working Path:\n"+path+"\nReponsity :"+reponsity);
-			git.RegReponsity(path, reponsity);
+			System.out.println("Current Working Path:\n"+path+"\nReponsity :"+repository);
+			git.RegReponsity(path, repository);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch(Exception e){
