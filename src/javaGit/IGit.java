@@ -25,4 +25,7 @@ public interface IGit extends Remote{
 	public boolean download_next(String downloadID) throws RemoteException;
 	public String downloadRepositoryStart(String repository) throws RemoteException;
 	public GitFile downloadFile(String downloadID) throws RemoteException;
+	
+	public String infoRepository(String repository) throws RemoteException;
+	public String infoRepositoryDetail(String repository) throws RemoteException;
 }

@@ -2,7 +2,7 @@ package javaGit;
 
 import java.io.Serializable;
 
-public class GitFile implements Serializable{
+public class GitFile implements Serializable{	//download file part
 	private static final long serialVersionUID = -3570212155373044646L;
 	public String filepath;
 	public String repository;

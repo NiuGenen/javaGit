@@ -11,14 +11,14 @@ public class GitServer {
 	
 	private static IGit git;
 
-	public static void gitServerInit(){
+	public static void gitServerInit(){	//init server
         try {
 			srvrDir = new File(serverDirName);
 			if(!srvrDir.exists()){		//check default configure directory
 				srvrDir.mkdir();
 			}
 			
-			git = new GitImpl();	//remote object
+			git = new GitImpl();	//create remote object
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

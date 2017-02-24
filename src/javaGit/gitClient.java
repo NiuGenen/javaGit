@@ -11,28 +11,29 @@ public class GitClient {
 	
 	private static void gitClientInit(){
 		try {
-        	IGit git = (IGit)Naming.lookup("rmi://127.0.0.1:2048/git");
-        	cmd = new GitClientCmd(git);
+        	IGit git = (IGit)Naming.lookup("rmi://127.0.0.1:2048/git");	//get remote object 
+        	cmd = new GitClientCmd(git);	//create client command object
         } catch (MalformedURLException e) {  
-            System.out.println("url格式异常");  
+            System.out.println("URL format Exception.");  
         } catch (RemoteException e) {  
-            System.out.println("创建对象异常");  
+            System.out.println("Remote Exception.");
             e.printStackTrace();  
         } catch (NotBoundException e) {  
-            System.out.println("对象未绑定"); 
+            System.out.println("Remote Object not bound.");
         }
 	}
 
 	public static void main(String[] args) {
 		try{
-			gitClientInit();
+			gitClientInit();	//init git client
 			
-			if(args.length == 0 || args[0].toLowerCase().equals("help")){
+			if(args.length == 0 || 
+					args[0].toLowerCase().equals("help")){	//check if ask help
 				cmd.showHelp();
 				return;
 			}
 			
-			dispatchCmd(args);
+			dispatchCmd(args);	//run command
 			
         } catch (Exception e){
         	e.printStackTrace();
@@ -43,10 +44,16 @@ public class GitClient {
 		try{
             String command = args[0];
             switch(command){
-            case "clone":
+            case "info":
+            	if(args.length==2) cmd.gitInfo(args[1]);
+            	else if(args.length==3 && args[2].toString().toLowerCase().equals("detail")){
+            		cmd.gitInfoDetail(args[1]);
+            	}
+            	break;
+            case "clone":			//download files
             	cmd.gitClone(args[1]);
             	break;
-            case "commit":
+            case "commit":			//upload files
             	cmd.gitCommit(args[1]);
             	break;
             case "del":				//delete repository

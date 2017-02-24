@@ -109,4 +109,55 @@ public class GitImpl extends UnicastRemoteObject implements IGit{
 			throws RemoteException {
 		return git_trans.downloadFile(downloadID);
 	}
+
+	@Override
+	public String infoRepository(String repository)
+			throws RemoteException {
+		if(!git_reg.containRepository(repository)){
+			return "repository [" + repository + "] does not exist.";
+		}
+		String ret = "";
+		File rep = new File(GitServer.serverDirName + "/" + repository);
+		File[] files = rep.listFiles();
+		for(int i=0;i<files.length;++i){
+			File f = files[i];
+			if(f.isFile()){
+				ret += "FILE ";
+			}
+			else{
+				ret += "DIRE ";
+			}
+			ret += String.format("%24s %10d\n", f.getName(),f.length());
+		}
+		return ret;
+	}
+	
+	public String infoRepositoryDetail(String repository){
+		if(!git_reg.containRepository(repository)){
+			return "repository [" + repository + "] does not exist.";
+		}
+		return "[Repository]" + repository + "\n" + infoRepHelp(GitServer.serverDirName + "/" + repository,1);
+	}
+	
+	private String infoRepHelp(String rootPath,int level){
+		String ret = "";
+		File root = new File(rootPath);
+		File[] files = root.listFiles();
+		for(int i=0;i<files.length;++i){
+			File f = files[i];
+			String line = "";
+			for(int j=level;j>0;--j){
+				line += "      ";
+			}
+			if(f.isFile()){
+				line += String.format("[F]%s", f.getName()) + "\n";
+			}
+			else if(f.isDirectory()){
+				line += String.format("[D]%s", f.getName()) + "\n";
+				line += infoRepHelp(rootPath + "/" + f.getName(),level + 1);
+			}
+			ret += line;
+		}
+		return ret;
+	}
 }

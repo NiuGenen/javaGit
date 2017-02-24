@@ -11,18 +11,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class GitReg {
-	private String regFileName = "javaGitRegister.txt";
-	private File regFile;
+public class GitReg {	//manage server's repositories' register information
+	private String regFileName = "javaGitRegister.txt";	//filename
+	private File regFile;								//File object
 	
-	private Map<String,String> reg_map;
+	private Map<String,String> reg_map;	//relationship between client's directory with remote repository
 	
 	private static GitReg git_reg = new GitReg();
 	public static GitReg getInstance(){	//signal instance
 		return git_reg;
 	}
 
-	public boolean containRepository(String repository){
+	public boolean containRepository(String repository){	//if server has this repository whos name is @repository
 		return reg_map.containsKey(repository);
 	}
 	
@@ -30,10 +30,10 @@ public class GitReg {
 		try{
 			regFile = new File(GitServer.serverDirName+"/"+regFileName);
 			if(!regFile.exists()){	//check default register file
-				regFile.createNewFile();
+				regFile.createNewFile();	//if not exist then create a new one
 			}
 
-			reg_map = new HashMap<String,String>(); //map to manage register
+			reg_map = new HashMap<String,String>(); //craete map to manage register
 			
 			FileInputStream regInputStream = new FileInputStream(regFile);
 			InputStreamReader regReader = new InputStreamReader(regInputStream);
@@ -54,9 +54,9 @@ public class GitReg {
 			while(it.hasNext()){
 				String name = it.next();
 				File reposity = new File(GitServer.serverDirName + "/" + name);
-				if(!reposity.exists()){
+				if(!reposity.exists()){	//if one repository is in register file but its directoey is not exist
 					System.out.println("[Rebuild Repository]\n" + name);
-					reposity.mkdir();
+					reposity.mkdir();	//create this repository's directory
 				}
 			}
 			
@@ -65,7 +65,7 @@ public class GitReg {
 		}
 	}
 	
-	public String showReponsities(){
+	public String showReponsities(){	//get remote repositories' infotmation
 		String ret = "";
 		Iterator<String> it = reg_map.keySet().iterator();
 		while(it.hasNext()){
@@ -75,8 +75,9 @@ public class GitReg {
 		return ret;
 	}
 
-	public String regRepository(String path,String repository){
-		try {
+	public String regRepository(String path,String repository){	//register new repository
+		try {	//@path: client's directory
+				//@repository: server's repository
 			if(reg_map.containsKey(repository)){
 				return "Reponsity ["+repository+"] already exists.";
 			}
@@ -101,22 +102,22 @@ public class GitReg {
 		return "Register repository [" + repository + "] success.";
 	}
 	
-	public String delRepository(String repository){
+	public String delRepository(String repository){	//delete repository
 		try {
-			if(!reg_map.containsKey(repository)){
+			if(!reg_map.containsKey(repository)){	//if it does not exist
 				return "repository [" + repository + "] does not exist.";
 			}
 
 			File reponsityDir = new File(GitServer.serverDirName+"/"+repository);
-			boolean del = reponsityDir.delete();
+			boolean del = reponsityDir.delete();	//delete repository
 			if(!del){
-				return "Delete repository [" + repository + "] fail.";
+				return "Delete repository [" + repository + "] fail.";	//if fail to delete
 			}
 			
-			reg_map.remove(repository);	//remove pair from reg_map
+			reg_map.remove(repository);	//remove this pair from reg_map
 			
 			FileWriter writer = new FileWriter(regFile);
-			Iterator<String> it = reg_map.keySet().iterator();	//update registers
+			Iterator<String> it = reg_map.keySet().iterator();	//update records in register file
 			while(it.hasNext()){
 				String key = it.next();
 				String value = reg_map.get(key);
@@ -133,7 +134,9 @@ public class GitReg {
 		return "Delete repository " + repository + " success.";
 	}
 	
-	public boolean confirmRepository(String regPath, String repository){
+	public boolean confirmRepository(String regPath, String repository){	//check if this repository is bounded with this client's directory
+		//@regPath: client's directory
+		//@repository: server's repository
 		return reg_map.get(repository).equals(regPath);
 	}
 }
