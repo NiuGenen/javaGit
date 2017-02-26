@@ -14,6 +14,7 @@ public interface IGit extends Remote{
 	public boolean confirmRepository(String regPath,String repository) throws RemoteException;
 	public boolean containRepository(String repository) throws RemoteException;
 
+	public boolean uploadRepositoryStart(String repository) throws RemoteException;
 	public String uploadFileStart(String repository,String filepath) throws RemoteException;
 	public void uploadFile(String uploadID,byte[] data,int start,int len) throws RemoteException;
 	public void uploadFileEnd(String uploadID) throws RemoteException;
@@ -28,4 +29,6 @@ public interface IGit extends Remote{
 	
 	public String infoRepository(String repository) throws RemoteException;
 	public String infoRepositoryDetail(String repository) throws RemoteException;
+	
+	public String vcRepository(String repository) throws RemoteException;
 }

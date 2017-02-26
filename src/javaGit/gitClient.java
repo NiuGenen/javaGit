@@ -44,6 +44,9 @@ public class GitClient {
 		try{
             String command = args[0];
             switch(command){
+            case "vc":
+            	cmd.getRepositoyVersions(args[1]);
+            	break;
             case "info":
             	if(args.length==2) cmd.gitInfo(args[1]);
             	else if(args.length==3 && args[2].toString().toLowerCase().equals("detail")){

@@ -71,6 +71,7 @@ public class GitTransFile {	//manage files' upload and download
 	public boolean download_next(String downloadID)
 			throws RemoteException {
 		Queue<GitFile> queue = map_download.get(downloadID);
+		if(queue.isEmpty()) map_download.remove(downloadID);
 		return !queue.isEmpty();	//if queue is not empty, then there are still data needed to be sent from server to client
 	}
 	

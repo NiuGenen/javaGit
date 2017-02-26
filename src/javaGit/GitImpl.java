@@ -9,12 +9,14 @@ public class GitImpl extends UnicastRemoteObject implements IGit{
 	private static final long serialVersionUID = -3861487618555766683L;
 
 	private GitReg git_reg;
+	private GitVC git_vc;
 	private GitTransFile git_trans;
 	
 	protected GitImpl() throws RemoteException {
 		super();
 		git_reg = GitReg.getInstance();
 		git_trans = GitTransFile.getInstance();
+		git_vc = GitVC.getInstance();
 	}
 
 	public String delRepository(String repository) 
@@ -42,6 +44,11 @@ public class GitImpl extends UnicastRemoteObject implements IGit{
 		return git_reg.showReponsities();
 	}
 
+	@Override
+	public boolean uploadRepositoryStart(String repository){
+		return git_vc.addVersion(repository);
+	}
+	
 	@Override
 	public String uploadFileStart(String repository, String path)
 			throws RemoteException {
@@ -159,5 +166,10 @@ public class GitImpl extends UnicastRemoteObject implements IGit{
 			ret += line;
 		}
 		return ret;
+	}
+
+	@Override
+	public String vcRepository(String repository) throws RemoteException {
+		return git_vc.getRepositoryVersions(repository);
 	}
 }

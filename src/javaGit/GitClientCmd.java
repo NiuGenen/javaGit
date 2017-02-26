@@ -45,7 +45,14 @@ public class GitClientCmd {
 			
 			File work_dir = new File(work_path);	//get current working directory to upload
 			
-			gitCommit_help(work_dir,repository,"/");	//upload files to remote repository
+			boolean ready = git.uploadRepositoryStart(repository);	//inform server
+			if(ready){
+				System.out.println("--- Start to commit ---");		//server is ready
+				gitCommit_help(work_dir,repository,"/");	//upload files to remote repository
+			}
+			else {
+				System.out.println("Wrong. Please check if this repository exist or other.");
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch(FileNotFoundException e){
@@ -195,6 +202,18 @@ public class GitClientCmd {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void getRepositoyVersions(String repository){
+		String vcs;
+		try{
+			vcs = git.vcRepository(repository);
+			System.out.println(vcs);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}
